@@ -1,0 +1,17 @@
+---
+mole_ss_method: '##METHOD##'
+mole_ss_password: '##PASSWORD##'
+mole_ss_server: '##SERVER##'
+mole_ss_server_port: '##PORT##'
+mole_privoxy_actions: |
+  {cow}
+  /
+  
+  {ss}
+  ##SS_PATTERN##
+  
+  {tor}
+  ##TOR_PATTERN##
+
+  {direct}
+  localhost

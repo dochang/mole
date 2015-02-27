@@ -1,0 +1,59 @@
+---
+- hosts: 'all'
+  vars:
+    ansible_python_interpreter: python2
+  vars_files:
+    - mole_vars.yml
+  roles:
+    - mole
+  # tasks:
+  #   - pip:
+  #       name: docker-py
+  #       state: latest
+  #     environment:
+  #       no_proxy: '*'
+  #   - docker:
+  #       name: shadowsocks
+  #       image: dochang/shadowsocks-libev:latest
+  #       command: ss-local
+  #       restart_policy: always
+  #       expose:
+  #         - '1080'
+  #       volumes:
+  #         - '{{ playbook_dir }}/etc/shadowsocks:/etc/shadowsocks'
+  #       state: '{{ state | default("present") }}'
+  #   - docker:
+  #       name: cow
+  #       image: dochang/cow:latest
+  #       restart_policy: always
+  #       expose:
+  #         - '7777'
+  #       volumes:
+  #         - '{{ playbook_dir }}/etc/cow:/.cow'
+  #       state: '{{ state | default("present") }}'
+  #   - docker:
+  #       name: tor
+  #       image: dochang/tor:latest
+  #       restart_policy: always
+  #       links:
+  #         - shadowsocks:shadowsocks
+  #       expose:
+  #         - '9050'
+  #       volumes:
+  #         - '{{ playbook_dir }}/etc/tor:/etc/tor'
+  #       state: '{{ state | default("present") }}'
+  #   - docker:
+  #       name: privoxy
+  #       image: dochang/privoxy:latest
+  #       restart_policy: always
+  #       links:
+  #         - cow:cow
+  #         - shadowsocks:shadowsocks
+  #         - tor:tor
+  #       volumes:
+  #         - '{{ playbook_dir }}/etc/privoxy:/etc/privoxy'
+  #       env:
+  #         TZ: 'Asia/Shanghai'
+  #       ports:
+  #         - '8118:8118'
+  #       state: '{{ state | default("present") }}'

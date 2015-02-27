@@ -1,0 +1,3 @@
+---
+mole_volume_dir: /var/local/lib/mole
+mole_state: present

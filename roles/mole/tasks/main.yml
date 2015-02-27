@@ -1,0 +1,75 @@
+---
+- pip:
+    name: docker-py
+    state: latest
+  environment:
+    no_proxy: '*'
+- file:
+    state: directory
+    path: '{{ mole_volume_dir }}'
+- synchronize:
+    dest: '{{ mole_volume_dir }}'
+    src: roles/mole/files/etc
+- file:
+    state: directory
+    path: '{{ mole_volume_dir }}/etc/shadowsocks'
+- template:
+    dest: '{{ mole_volume_dir }}/etc/shadowsocks/config.json'
+    src: 'etc/shadowsocks/config.json'
+- file:
+    state: directory
+    path: '{{ mole_volume_dir }}/etc/cow'
+- template:
+    dest: '{{ mole_volume_dir }}/etc/cow/rc'
+    src: 'etc/cow/rc'
+- file:
+    state: directory
+    path: '{{ mole_volume_dir }}/etc/privoxy'
+- template:
+    dest: '{{ mole_volume_dir }}/etc/privoxy/local.action'
+    src: 'etc/privoxy/local.action'
+- docker:
+    name: shadowsocks
+    image: dochang/shadowsocks-libev:latest
+    command: ss-local
+    restart_policy: always
+    expose:
+      - '1080'
+    volumes:
+      - '{{ mole_volume_dir }}/etc/shadowsocks:/etc/shadowsocks'
+    state: '{{ mole_state }}'
+- docker:
+    name: cow
+    image: dochang/cow:latest
+    restart_policy: always
+    expose:
+      - '7777'
+    volumes:
+      - '{{ mole_volume_dir }}/etc/cow:/.cow'
+    state: '{{ mole_state }}'
+- docker:
+    name: tor
+    image: dochang/tor:latest
+    restart_policy: always
+    links:
+      - shadowsocks:shadowsocks
+    expose:
+      - '9050'
+    volumes:
+      - '{{ mole_volume_dir }}/etc/tor:/etc/tor'
+    state: '{{ mole_state }}'
+- docker:
+    name: privoxy
+    image: dochang/privoxy:latest
+    restart_policy: always
+    links:
+      - cow:cow
+      - shadowsocks:shadowsocks
+      - tor:tor
+    volumes:
+      - '{{ mole_volume_dir }}/etc/privoxy:/etc/privoxy'
+    env:
+      TZ: 'Asia/Shanghai'
+    ports:
+      - '8118:8118'
+    state: '{{ mole_state }}'

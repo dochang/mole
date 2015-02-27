@@ -1,0 +1,16 @@
+{% raw %}
+{{alias}}
+direct      = +forward-override{forward .}
+tor         = +forward-override{forward-socks5t tor:9050 .}
+ss          = +forward-override{forward-socks5t shadowsocks:1080 .}
+cow         = +forward-override{forward cow:7777}
+{% endraw %}
+
+{{ mole_privoxy_actions }}
+
+{% raw %}
+{tor}
+.tor-proxy.net
+.torproject.org
+.onion
+{% endraw %}
