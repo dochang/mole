@@ -10,6 +10,7 @@
 - synchronize:
     dest: '{{ mole_volume_dir }}'
     src: roles/mole/files/etc
+    perms: no
 - file:
     state: directory
     path: '{{ mole_volume_dir }}/etc/shadowsocks'
