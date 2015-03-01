@@ -3,6 +3,12 @@ mole_ss_method: '##METHOD##'
 mole_ss_password: '##PASSWORD##'
 mole_ss_server: '##SERVER##'
 mole_ss_server_port: '##PORT##'
+mole_cow_blocked: |
+  site1.com
+  site2.com
+mole_cow_direct: |
+  site3.com
+  site4.com
 mole_privoxy_actions: |
   {cow}
   /

@@ -22,6 +22,12 @@
 - template:
     dest: '{{ mole_volume_dir }}/etc/cow/rc'
     src: 'etc/cow/rc'
+- template:
+    dest: '{{ mole_volume_dir }}/etc/cow/blocked'
+    src: 'etc/cow/blocked'
+- template:
+    dest: '{{ mole_volume_dir }}/etc/cow/direct'
+    src: 'etc/cow/direct'
 - file:
     state: directory
     path: '{{ mole_volume_dir }}/etc/privoxy'

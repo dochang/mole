@@ -6,7 +6,9 @@ ss          = +forward-override{forward-socks5t shadowsocks:1080 .}
 cow         = +forward-override{forward cow:7777}
 {% endraw %}
 
+{% if mole_privoxy_actions | default('', true) %}
 {{ mole_privoxy_actions }}
+{% endif %}
 
 {% raw %}
 {tor}
