@@ -13,28 +13,20 @@
     perms: no
 - file:
     state: directory
-    path: '{{ mole_volume_dir }}/etc/shadowsocks'
+    path: '{{ mole_volume_dir }}/etc/{{ item }}'
+  with_items:
+    - shadowsocks
+    - cow
+    - privoxy
 - template:
-    dest: '{{ mole_volume_dir }}/etc/shadowsocks/config.json'
-    src: 'etc/shadowsocks/config.json'
-- file:
-    state: directory
-    path: '{{ mole_volume_dir }}/etc/cow'
-- template:
-    dest: '{{ mole_volume_dir }}/etc/cow/rc'
-    src: 'etc/cow/rc'
-- template:
-    dest: '{{ mole_volume_dir }}/etc/cow/blocked'
-    src: 'etc/cow/blocked'
-- template:
-    dest: '{{ mole_volume_dir }}/etc/cow/direct'
-    src: 'etc/cow/direct'
-- file:
-    state: directory
-    path: '{{ mole_volume_dir }}/etc/privoxy'
-- template:
-    dest: '{{ mole_volume_dir }}/etc/privoxy/local.action'
-    src: 'etc/privoxy/local.action'
+    dest: '{{ mole_volume_dir }}/etc/{{ item }}'
+    src: 'etc/{{ item }}'
+  with_items:
+    - shadowsocks/config.json
+    - cow/rc
+    - cow/blocked
+    - cow/direct
+    - privoxy/local.action
 - docker:
     name: shadowsocks
     image: dochang/shadowsocks-libev:latest
