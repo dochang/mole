@@ -41,6 +41,8 @@
     name: cow
     image: dochang/cow:latest
     restart_policy: always
+    links:
+      - shadowsocks:shadowsocks
     expose:
       - '7777'
     volumes:
