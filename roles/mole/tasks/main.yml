@@ -1,7 +1,7 @@
 ---
 - pip:
     name: docker-py
-    state: latest
+    state: present
   environment:
     no_proxy: '*'
 - file:
