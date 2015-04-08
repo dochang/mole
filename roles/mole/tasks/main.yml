@@ -1,24 +1,29 @@
 ---
-- pip:
+- name: Ensure docker-py present
+  pip:
     name: docker-py
     state: present
   environment:
     no_proxy: '*'
-- file:
+- name: Ensure mole_volume_dir is a directory
+  file:
     state: directory
     path: '{{ mole_volume_dir }}'
-- synchronize:
+- name: Synchronize /etc
+  synchronize:
     dest: '{{ mole_volume_dir }}'
     src: roles/mole/files/etc
     perms: no
-- file:
+- name: Ensure /etc/* are present and directories
+  file:
     state: directory
     path: '{{ mole_volume_dir }}/etc/{{ item }}'
   with_items:
     - shadowsocks
     - cow
     - privoxy
-- template:
+- name: Copy config template
+  template:
     dest: '{{ mole_volume_dir }}/etc/{{ item }}'
     src: 'etc/{{ item }}'
   with_items:
@@ -27,7 +32,8 @@
     - cow/blocked
     - cow/direct
     - privoxy/user.action
-- docker:
+- name: Setup shadowsocks container
+  docker:
     name: shadowsocks
     image: dochang/shadowsocks-libev:latest
     command: ss-local
@@ -37,7 +43,8 @@
     volumes:
       - '{{ mole_volume_dir }}/etc/shadowsocks:/etc/shadowsocks'
     state: '{{ mole_state }}'
-- docker:
+- name: Setup cow container
+  docker:
     name: cow
     image: dochang/cow:latest
     restart_policy: always
@@ -48,7 +55,8 @@
     volumes:
       - '{{ mole_volume_dir }}/etc/cow:/.cow'
     state: '{{ mole_state }}'
-- docker:
+- name: Setup tor container
+  docker:
     name: tor
     image: dochang/tor:latest
     restart_policy: always
@@ -59,7 +67,8 @@
     volumes:
       - '{{ mole_volume_dir }}/etc/tor:/etc/tor'
     state: '{{ mole_state }}'
-- docker:
+- name: Setup privoxy container
+  docker:
     name: privoxy
     image: dochang/privoxy:latest
     restart_policy: always
