@@ -1,7 +1,8 @@
 ---
 - name: Ensure docker-py present
   pip:
-    name: docker-py
+    # https://github.com/ansible/ansible-modules-core/issues/1227
+    name: 'docker-py==1.1.0'
     state: present
   environment:
     no_proxy: '*'
