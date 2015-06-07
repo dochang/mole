@@ -3,6 +3,6 @@
   vars:
     ansible_python_interpreter: python2
   vars_files:
-    - mole_vars.yml
+    - '~/.config/mole/vars.yml'
   roles:
     - mole
