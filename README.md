@@ -11,7 +11,7 @@ Mole will install docker-py by pip.
 Set up
 ------
 
-Write your own `mole_vars.yml` based on `mole_vars.yml.sample`.
+Write your own `~/.config/mole/` based on `config.sample/`.
 
 Run
 ---

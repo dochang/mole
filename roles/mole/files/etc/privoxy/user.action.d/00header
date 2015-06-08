@@ -1,23 +1,8 @@
-{% raw %}
 {{alias}}
 direct      = +forward-override{forward .}
 tor         = +forward-override{forward-socks5t tor:9050 .}
 ss          = +forward-override{forward-socks5t shadowsocks:1080 .}
 cow         = +forward-override{forward cow:7777}
-{% endraw %}
 
-{% if mole_privoxy_actions | default('', true) %}
-{{ mole_privoxy_actions }}
-{% endif %}
-
-{% raw %}
-{tor}
-.tor-proxy.net
-.torproject.org
-.onion
-
-{direct}
-.lvh.me
-.vcap.me
-.localtest.me
-{% endraw %}
+{cow}
+/

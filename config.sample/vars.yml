@@ -9,15 +9,3 @@ mole_cow_blocked: |
 mole_cow_direct: |
   site3.com
   site4.com
-mole_privoxy_actions: |
-  {cow}
-  /
-  
-  {ss}
-  ##SS_PATTERN##
-  
-  {tor}
-  ##TOR_PATTERN##
-
-  {direct}
-  localhost

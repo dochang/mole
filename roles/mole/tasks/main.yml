@@ -32,7 +32,20 @@
     - cow/rc
     - cow/blocked
     - cow/direct
-    - privoxy/user.action
+- name: Copy privoxy user.action templates
+  copy:
+    dest: '{{ mole_volume_dir }}/etc/privoxy/'
+    src: 'etc/privoxy/user.action.d'
+- name: Assemble etc/privoxy/user.action.d/50body
+  assemble:
+    src: '~/.config/mole/user.action.d'
+    remote_src: False
+    dest: '{{ mole_volume_dir }}/etc/privoxy/user.action.d/50body'
+- name: Assemble etc/privoxy/user.action
+  assemble:
+    src: '{{ mole_volume_dir }}/etc/privoxy/user.action.d'
+    remote_src: True
+    dest: '{{ mole_volume_dir }}/etc/privoxy/user.action'
 - name: Setup shadowsocks container
   docker:
     name: shadowsocks
