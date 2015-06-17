@@ -69,6 +69,7 @@
   docker:
     name: shadowsocks
     image: dochang/shadowsocks-libev:latest
+    pull: '{{ mole_pull_image }}'
     command: ss-local
     restart_policy: always
     expose:
@@ -81,6 +82,7 @@
   docker:
     name: cow
     image: dochang/cow:latest
+    pull: '{{ mole_pull_image }}'
     restart_policy: always
     links:
       - shadowsocks:shadowsocks
@@ -94,6 +96,7 @@
   docker:
     name: tor
     image: dochang/tor:latest
+    pull: '{{ mole_pull_image }}'
     restart_policy: always
     links:
       - shadowsocks:shadowsocks
@@ -107,6 +110,7 @@
   docker:
     name: privoxy
     image: dochang/privoxy:latest
+    pull: '{{ mole_pull_image }}'
     restart_policy: always
     links:
       - cow:cow
