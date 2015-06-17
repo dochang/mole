@@ -6,7 +6,7 @@
   pip:
     # https://github.com/ansible/ansible-modules-core/issues/1227
     name: 'docker-py==1.1.0'
-    state: present
+    state: '{{ mole_dockerpy_state }}'
   environment:
     no_proxy: '*'
 

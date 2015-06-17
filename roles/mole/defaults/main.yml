@@ -3,3 +3,4 @@ mole_volume_dir: /var/local/lib/mole
 mole_state: started
 mole_config_dir: '{{ lookup("env", "XDG_CONFIG_HOME") | default(lookup("env", "HOME") + "/.config", true) }}/mole'
 mole_pull_image: missing
+mole_dockerpy_state: present
