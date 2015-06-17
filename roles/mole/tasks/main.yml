@@ -1,4 +1,7 @@
 ---
+- name: Load variables from {{ mole_config_dir }}/vars.yml
+  include_vars: '{{ mole_config_dir }}/vars.yml'
+
 - name: Ensure docker-py present
   pip:
     # https://github.com/ansible/ansible-modules-core/issues/1227
@@ -6,15 +9,18 @@
     state: present
   environment:
     no_proxy: '*'
+
 - name: Ensure mole_volume_dir is a directory
   file:
     state: directory
     path: '{{ mole_volume_dir }}'
+
 - name: Synchronize /etc
   synchronize:
     dest: '{{ mole_volume_dir }}'
     src: roles/mole/files/etc
     perms: no
+
 - name: Ensure /etc/* are present and directories
   file:
     state: directory
@@ -23,6 +29,7 @@
     - shadowsocks
     - cow
     - privoxy
+
 - name: Copy config template
   template:
     dest: '{{ mole_volume_dir }}/etc/{{ item }}'
@@ -32,20 +39,32 @@
     - cow/rc
     - cow/blocked
     - cow/direct
+
 - name: Copy privoxy user.action templates
   copy:
     dest: '{{ mole_volume_dir }}/etc/privoxy/'
     src: 'etc/privoxy/user.action.d'
+
+- name: Check if {{ mole_config_dir }}/user.action.d exists
+  local_action:
+    module: stat
+    path: '{{ mole_config_dir }}/user.action.d'
+    follow: yes
+  register: st
+
 - name: Assemble etc/privoxy/user.action.d/50body
   assemble:
-    src: '~/.config/mole/user.action.d'
+    src: '{{ mole_config_dir }}/user.action.d'
     remote_src: False
     dest: '{{ mole_volume_dir }}/etc/privoxy/user.action.d/50body'
+  when: st.stat.isdir is defined and st.stat.isdir
+
 - name: Assemble etc/privoxy/user.action
   assemble:
     src: '{{ mole_volume_dir }}/etc/privoxy/user.action.d'
     remote_src: True
     dest: '{{ mole_volume_dir }}/etc/privoxy/user.action'
+
 - name: Setup shadowsocks container
   docker:
     name: shadowsocks
@@ -57,6 +76,7 @@
     volumes:
       - '{{ mole_volume_dir }}/etc/shadowsocks:/etc/shadowsocks'
     state: '{{ mole_state }}'
+
 - name: Setup cow container
   docker:
     name: cow
@@ -69,6 +89,7 @@
     volumes:
       - '{{ mole_volume_dir }}/etc/cow:/.cow'
     state: '{{ mole_state }}'
+
 - name: Setup tor container
   docker:
     name: tor
@@ -81,6 +102,7 @@
     volumes:
       - '{{ mole_volume_dir }}/etc/tor:/etc/tor'
     state: '{{ mole_state }}'
+
 - name: Setup privoxy container
   docker:
     name: privoxy
@@ -95,5 +117,5 @@
     env:
       TZ: 'Asia/Shanghai'
     ports:
-      - '8118:8118'
+      - '127.0.0.1:8118:8118'
     state: '{{ mole_state }}'

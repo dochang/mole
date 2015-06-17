@@ -1,8 +1,0 @@
----
-- hosts: 'all'
-  vars:
-    ansible_python_interpreter: python2
-  vars_files:
-    - '~/.config/mole/vars.yml'
-  roles:
-    - mole

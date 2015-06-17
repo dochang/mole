@@ -16,20 +16,20 @@ Write your own `~/.config/mole/` based on `config.sample/`.
 Run
 ---
 
-    ansible-playbook local.yml -e 'mole_state=running'
+    ansible-playbook mole.yml -e 'mole_state=started'
 
 Restart
 -------
 
-    ansible-playbook local.yml -e 'mole_state=restarted'
+    ansible-playbook mole.yml -e 'mole_state=restarted'
 
 Stop
 ----
 
-    ansible-playbook local.yml -e 'mole_state=stopped'
+    ansible-playbook mole.yml -e 'mole_state=stopped'
 
 Stop & Remove
 -------------
 
-    ansible-playbook local.yml -e 'mole_state=absent'
+    ansible-playbook mole.yml -e 'mole_state=absent'
 
