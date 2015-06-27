@@ -1,12 +1,43 @@
+{% if mole_ss_server_password %}
 {
-  "server": "{{ mole_ss_server }}",
-  "server_port": {{ mole_ss_server_port }},
-  "password": "{{ mole_ss_password }}",
-  "port_password": {
-    "{{ mole_ss_server_port }}": "{{ mole_ss_password }}"
-  },
-  "local": "0.0.0.0",
+  {# for ss-local-libev -#}
+  "server": [
+    {% for item in mole_ss_server_password -%}
+    "{{ item[0] }}"{% if not loop.last %},{% endif %}
+
+    {% endfor %}
+  ],
+  "server_port": {{ mole_ss_server_password[0][0] | regex_replace('^.*:([^:]+)$', '\\1') }},
+  "password": "{{ mole_ss_server_password[0][1] }}",
+  "local_address": "0.0.0.0",
+  "method": "{{ mole_ss_server_password[0][2] }}",
+  {# for ss-local-go -#}
+  "server_password": [
+    {% for item in mole_ss_server_password -%}
+    ["{{ item[0] }}", "{{ item[1] }}", "{{ item[2] }}"]{% if not loop.last %},{% endif %}
+
+    {% endfor %}
+  ],
+  {# for both -#}
   "local_port": 1080,
-  "method": "{{ mole_ss_method }}",
   "timeout": 600
 }
+{% else %}
+{
+  {# for ss-local-libev -#}
+  "server": [
+    "{{ mole_ss_server }}:{{ mole_ss_server_port }}"
+  ],
+  "server_port": {{ mole_ss_server_port }},
+  "password": "{{ mole_ss_password }}",
+  "local_address": "0.0.0.0",
+  "method": "{{ mole_ss_method }}",
+  {# for ss-local-go -#}
+  "server_password": [
+    ["{{ mole_ss_server }}:{{ mole_ss_server_port }}", "{{ mole_ss_password }}", "{{ mole_ss_method }}"]
+  ],
+  {# for both -#}
+  "local_port": 1080,
+  "timeout": 600
+}
+{% endif %}

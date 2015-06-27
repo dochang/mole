@@ -1,8 +1,14 @@
 ---
+mole_ss_server_password:
+  - ['##SERVER_1##:##PORT_1##', '##PASSWORD_1##', '##METHOD_1##']
+  - ['##SERVER_2##:##PORT_2##', '##PASSWORD_2##', '##METHOD_2##']
+
+# The following 4 vars are deprecated.  Use `mole_ss_server_password` instead.
 mole_ss_method: '##METHOD##'
 mole_ss_password: '##PASSWORD##'
 mole_ss_server: '##SERVER##'
 mole_ss_server_port: '##PORT##'
+
 mole_cow_blocked: |
   site1.com
   site2.com

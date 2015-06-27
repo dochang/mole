@@ -1,2 +1,6 @@
 listen = http://0.0.0.0:7777
+{% if mole_ss_server_password %}
+proxy = ss://{{ mole_ss_server_password[0][2] }}:{{ mole_ss_server_password[0][1] }}@{{ mole_ss_server_password[0][0]}}
+{% else %}
 proxy = ss://{{ mole_ss_method }}:{{ mole_ss_password }}@{{ mole_ss_server }}:{{ mole_ss_server_port }}
+{% endif %}
