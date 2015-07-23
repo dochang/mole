@@ -1,23 +1,13 @@
 {% if mole_ss_server_password %}
 {
   {# for ss-local-libev -#}
-  "server": [
-    {% for item in mole_ss_server_password -%}
-    "{{ item[0] }}"{% if not loop.last %},{% endif %}
-
-    {% endfor %}
-  ],
+  "server": {{ mole_ss_server_password | map(attribute=0) | list | to_nice_json | indent(2, false) }},
   "server_port": {{ mole_ss_server_password[0][0] | regex_replace('^.*:([^:]+)$', '\\1') }},
-  "password": "{{ mole_ss_server_password[0][1] }}",
+  "password": {{ mole_ss_server_password[0][1] | to_json }},
   "local_address": "0.0.0.0",
-  "method": "{{ mole_ss_server_password[0][2] }}",
+  "method": {{ mole_ss_server_password[0][2] | to_json }},
   {# for ss-local-go -#}
-  "server_password": [
-    {% for item in mole_ss_server_password -%}
-    ["{{ item[0] }}", "{{ item[1] }}", "{{ item[2] }}"]{% if not loop.last %},{% endif %}
-
-    {% endfor %}
-  ],
+  "server_password": {{ mole_ss_server_password | to_nice_json | indent(2, false) }},
   {# for both -#}
   "local_port": 1080,
   "timeout": 600
@@ -25,17 +15,13 @@
 {% else %}
 {
   {# for ss-local-libev -#}
-  "server": [
-    "{{ mole_ss_server }}:{{ mole_ss_server_port }}"
-  ],
+  "server": {{ [ "%s:%s" | format(mole_ss_server, mole_ss_server_port) ] | to_nice_json | indent(2, false) }},
   "server_port": {{ mole_ss_server_port }},
-  "password": "{{ mole_ss_password }}",
+  "password": {{ mole_ss_password | to_json }},
   "local_address": "0.0.0.0",
-  "method": "{{ mole_ss_method }}",
+  "method": {{ mole_ss_method | to_json }},
   {# for ss-local-go -#}
-  "server_password": [
-    ["{{ mole_ss_server }}:{{ mole_ss_server_port }}", "{{ mole_ss_password }}", "{{ mole_ss_method }}"]
-  ],
+  "server_password": {{ [ [ "%s:%s" | format(mole_ss_server, mole_ss_server_port), mole_ss_password, mole_ss_method ] ] | to_nice_json | indent(2, false) }},
   {# for both -#}
   "local_port": 1080,
   "timeout": 600
