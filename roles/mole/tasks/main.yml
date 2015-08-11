@@ -69,7 +69,7 @@
 - name: Setup shadowsocks container
   docker:
     name: shadowsocks
-    image: dochang/shadowsocks-libev:latest
+    image: dochang/shadowsocks-go:latest
     pull: '{{ mole_pull_image }}'
     command: ss-local
     restart_policy: always
