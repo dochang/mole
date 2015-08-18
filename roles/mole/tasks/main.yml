@@ -71,7 +71,7 @@
     name: shadowsocks
     image: dochang/shadowsocks-go:latest
     pull: '{{ mole_pull_image }}'
-    command: ss-local
+    command: shadowsocks-local
     restart_policy: always
     expose:
       - '1080'
