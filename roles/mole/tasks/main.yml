@@ -122,5 +122,5 @@
     env:
       TZ: 'Asia/Shanghai'
     ports:
-      - '127.0.0.1:8118:8118'
+      - '{{ mole_listen_ip | default("127.0.0.1", true) }}:8118:8118'
     state: '{{ mole_state }}'
