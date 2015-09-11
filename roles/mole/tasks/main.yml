@@ -16,11 +16,10 @@
     state: directory
     path: '{{ mole_volume_dir }}'
 
-- name: Synchronize /etc
-  synchronize:
+- name: Copy /etc
+  copy:
     dest: '{{ mole_volume_dir }}'
-    src: roles/mole/files/etc
-    perms: no
+    src: etc
 
 - name: Ensure /etc/* are present and directories
   file:
@@ -29,7 +28,6 @@
   with_items:
     - shadowsocks
     - cow
-    - privoxy
 
 - name: Copy config template
   template:
@@ -40,11 +38,6 @@
     - cow/rc
     - cow/blocked
     - cow/direct
-
-- name: Copy privoxy user.action templates
-  copy:
-    dest: '{{ mole_volume_dir }}/etc/privoxy/'
-    src: 'etc/privoxy/user.action.d'
 
 - name: Check if {{ mole_config_dir }}/user.action.d exists
   local_action:
