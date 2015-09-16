@@ -33,3 +33,8 @@ Stop & Remove
 
     ansible-playbook mole.yml -e 'mole_state=absent'
 
+License
+-------
+
+[MIT](http://dochang.mit-license.org/)
+
