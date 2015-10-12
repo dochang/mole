@@ -5,3 +5,4 @@ mole_config_dir: '{{ lookup("env", "XDG_CONFIG_HOME") | default(lookup("env", "H
 mole_pull_image: missing
 mole_dockerpy_state: present
 mole_listen_ip: 127.0.0.1
+mole_docker_api_version: auto

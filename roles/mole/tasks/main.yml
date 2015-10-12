@@ -61,6 +61,7 @@
 
 - name: Setup shadowsocks container
   docker:
+    docker_api_version: '{{ mole_docker_api_version }}'
     name: shadowsocks
     image: dochang/shadowsocks-go:latest
     pull: '{{ mole_pull_image }}'
@@ -74,6 +75,7 @@
 
 - name: Setup cow container
   docker:
+    docker_api_version: '{{ mole_docker_api_version }}'
     name: cow
     image: dochang/cow:latest
     pull: '{{ mole_pull_image }}'
@@ -88,6 +90,7 @@
 
 - name: Setup tor container
   docker:
+    docker_api_version: '{{ mole_docker_api_version }}'
     name: tor
     image: dochang/tor:latest
     pull: '{{ mole_pull_image }}'
@@ -102,6 +105,7 @@
 
 - name: Setup privoxy container
   docker:
+    docker_api_version: '{{ mole_docker_api_version }}'
     name: privoxy
     image: dochang/privoxy:latest
     pull: '{{ mole_pull_image }}'
