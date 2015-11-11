@@ -69,6 +69,8 @@
       - '1080'
     volumes:
       - '{{ mole_volume_dir }}/etc/shadowsocks:/etc/shadowsocks'
+    ports:
+      - '{{ mole_listen_ip | default("127.0.0.1", true) }}:1080:1080'
     state: '{{ mole_state }}'
 
 - name: Setup cow container
@@ -84,6 +86,8 @@
       - '7777'
     volumes:
       - '{{ mole_volume_dir }}/etc/cow:/.cow'
+    ports:
+      - '{{ mole_listen_ip | default("127.0.0.1", true) }}:7777:7777'
     state: '{{ mole_state }}'
 
 - name: Setup tor container
@@ -99,6 +103,8 @@
       - '9050'
     volumes:
       - '{{ mole_volume_dir }}/etc/tor:/etc/tor'
+    ports:
+      - '{{ mole_listen_ip | default("127.0.0.1", true) }}:9050:9050'
     state: '{{ mole_state }}'
 
 - name: Setup privoxy container
