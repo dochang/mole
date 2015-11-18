@@ -61,7 +61,7 @@
   docker:
     docker_api_version: '{{ mole_docker_api_version }}'
     name: shadowsocks
-    image: dochang/shadowsocks-go:latest
+    image: 'dochang/shadowsocks-go:{{ mole_docker_image_tag }}'
     pull: '{{ mole_pull_image }}'
     command: shadowsocks-local
     restart_policy: always
@@ -77,7 +77,7 @@
   docker:
     docker_api_version: '{{ mole_docker_api_version }}'
     name: cow
-    image: dochang/cow:latest
+    image: 'dochang/cow:{{ mole_docker_image_tag }}'
     pull: '{{ mole_pull_image }}'
     restart_policy: always
     links:

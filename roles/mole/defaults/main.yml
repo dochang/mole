@@ -6,3 +6,4 @@ mole_pull_image: missing
 mole_dockerpy_state: present
 mole_listen_ip: 127.0.0.1
 mole_docker_api_version: auto
+mole_docker_image_tag: latest
