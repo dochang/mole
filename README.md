@@ -1,6 +1,9 @@
 MOLE
 ====
 
+[![Issue Stats](http://issuestats.com/github/dochang/mole/badge/pr)](http://www.issuestats.com/github/dochang/mole)
+[![Issue Stats](http://issuestats.com/github/dochang/mole/badge/issue)](http://www.issuestats.com/github/dochang/mole)
+
 Let's tunnel!
 
 Requirements
