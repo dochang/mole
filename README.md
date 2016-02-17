@@ -19,22 +19,22 @@ Write your own `~/.config/mole/` based on `config.sample/`.
 Run
 ---
 
-    ansible-playbook mole.yml -e 'mole_state=started'
+    ansible-playbook -i localhost, mole.yml -e 'mole_state=started'
 
 Restart
 -------
 
-    ansible-playbook mole.yml -e 'mole_state=restarted'
+    ansible-playbook -i localhost, mole.yml -e 'mole_state=restarted'
 
 Stop
 ----
 
-    ansible-playbook mole.yml -e 'mole_state=stopped'
+    ansible-playbook -i localhost, mole.yml -e 'mole_state=stopped'
 
 Stop & Remove
 -------------
 
-    ansible-playbook mole.yml -e 'mole_state=absent'
+    ansible-playbook -i localhost, mole.yml -e 'mole_state=absent'
 
 License
 -------
