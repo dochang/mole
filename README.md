@@ -39,5 +39,5 @@ Stop & Remove
 License
 -------
 
-[MIT](http://dochang.mit-license.org/)
+[MIT](https://dochang.mit-license.org/)
 
