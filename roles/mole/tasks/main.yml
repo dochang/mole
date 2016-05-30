@@ -44,14 +44,6 @@
     follow: yes
   register: st
 
-- name: Ensure etc/privoxy/user.action.d/50body absent
-  file:
-    state: absent
-    path: '{{ mole_volume_dir }}/etc/privoxy/user.action.d/50body'
-  when: st.stat.isdir is defined and st.stat.isdir
-# If this file exists, the next task will put the assembled content into a file
-# `src` in the playbook directory.
-
 - name: Assemble etc/privoxy/user.action.d/50body
   assemble:
     src: '{{ mole_config_dir }}/user.action.d'
