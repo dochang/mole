@@ -58,14 +58,14 @@
     dest: '{{ mole_volume_dir }}/etc/privoxy/user.action'
 
 - name: Setup shadowsocks container
-  docker:
+  docker_container:
     docker_api_version: '{{ mole_docker_api_version }}'
     name: shadowsocks
     image: 'dochang/shadowsocks-go:{{ mole_docker_image_tag }}'
     pull: '{{ mole_pull_image }}'
     command: shadowsocks-local
     restart_policy: always
-    expose:
+    exposed:
       - '1080'
     volumes:
       - '{{ mole_volume_dir }}/etc/shadowsocks:/etc/shadowsocks'
@@ -74,7 +74,7 @@
     state: '{{ mole_state }}'
 
 - name: Setup cow container
-  docker:
+  docker_container:
     docker_api_version: '{{ mole_docker_api_version }}'
     name: cow
     image: 'dochang/cow:{{ mole_docker_image_tag }}'
@@ -82,7 +82,7 @@
     restart_policy: always
     links:
       - shadowsocks:shadowsocks
-    expose:
+    exposed:
       - '7777'
     volumes:
       - '{{ mole_volume_dir }}/etc/cow:/.cow'
@@ -91,7 +91,7 @@
     state: '{{ mole_state }}'
 
 - name: Setup tor container
-  docker:
+  docker_container:
     docker_api_version: '{{ mole_docker_api_version }}'
     name: tor
     image: dochang/tor:latest
@@ -99,7 +99,7 @@
     restart_policy: always
     links:
       - shadowsocks:shadowsocks
-    expose:
+    exposed:
       - '9050'
     volumes:
       - '{{ mole_volume_dir }}/etc/tor:/etc/tor'
@@ -108,7 +108,7 @@
     state: '{{ mole_state }}'
 
 - name: Setup privoxy container
-  docker:
+  docker_container:
     docker_api_version: '{{ mole_docker_api_version }}'
     name: privoxy
     image: dochang/privoxy:latest
@@ -118,6 +118,8 @@
       - cow:cow
       - shadowsocks:shadowsocks
       - tor:tor
+    exposed:
+      - '8118'
     volumes:
       - '{{ mole_volume_dir }}/etc/privoxy:/etc/privoxy'
     env:
