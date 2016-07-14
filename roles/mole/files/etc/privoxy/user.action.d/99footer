@@ -4,6 +4,7 @@
 .torproject.org
 .onion
 .exit
+.noconnect
 
 {direct}
 .lvh.me
