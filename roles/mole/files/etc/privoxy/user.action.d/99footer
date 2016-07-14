@@ -3,6 +3,7 @@
 .tor-proxy.net
 .torproject.org
 .onion
+.exit
 
 {direct}
 .lvh.me
