@@ -6,3 +6,4 @@ proxy = ss://{{ sp[2] }}:{{ sp[1] }}@{{ sp[0] }}
 {% else %}
 proxy = ss://{{ mole_ss_method }}:{{ mole_ss_password }}@{{ mole_ss_server }}:{{ mole_ss_server_port }}
 {% endif %}
+loadBalance = latency
