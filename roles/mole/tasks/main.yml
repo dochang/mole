@@ -66,11 +66,11 @@
     remote_src: True
     dest: '{{ mole_volume_dir }}/etc/privoxy/user.action'
 
-- name: Setup shadowsocks container
+- name: Setup shadowsocks-ota container
   docker_container:
     docker_api_version: '{{ mole_docker_api_version }}'
-    name: shadowsocks
-    image: 'dochang/shadowsocks-go:{{ mole_docker_image_tag }}'
+    name: shadowsocks-ota
+    image: 'dochang/shadowsocks-go:ota'
     pull: '{{ mole_pull_image }}'
     command: shadowsocks-local
     restart_policy: always
@@ -90,7 +90,7 @@
     pull: '{{ mole_pull_image }}'
     restart_policy: always
     links:
-      - shadowsocks:shadowsocks
+      - shadowsocks-ota:shadowsocks
     exposed:
       - '7777'
     volumes:
@@ -107,7 +107,7 @@
     pull: '{{ mole_pull_image }}'
     restart_policy: always
     links:
-      - shadowsocks:shadowsocks
+      - shadowsocks-ota:shadowsocks
     exposed:
       - '9050'
     volumes:
@@ -125,7 +125,7 @@
     restart_policy: always
     links:
       - cow:cow
-      - shadowsocks:shadowsocks
+      - shadowsocks-ota:shadowsocks
       - tor:tor
     exposed:
       - '8118'

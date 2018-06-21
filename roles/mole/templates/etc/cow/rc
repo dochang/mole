@@ -1,9 +1,3 @@
 listen = http://0.0.0.0:7777
-{% if mole_ss_server_password %}
-{% for sp in mole_ss_server_password %}
-proxy = ss://{{ sp[2] }}:{{ sp[1] }}@{{ sp[0] }}
-{% endfor %}
-{% else %}
-proxy = ss://{{ mole_ss_method }}:{{ mole_ss_password }}@{{ mole_ss_server }}:{{ mole_ss_server_port }}
-{% endif %}
+proxy = socks5://shadowsocks:1080
 loadBalance = latency
