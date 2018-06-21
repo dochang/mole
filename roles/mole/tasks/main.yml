@@ -68,57 +68,57 @@
 
 - name: Setup shadowsocks-ota container
   docker_container:
-    docker_api_version: '{{ mole_docker_api_version }}'
+    api_version: '{{ mole_docker_api_version }}'
     name: shadowsocks-ota
     image: 'dochang/shadowsocks-go:ota'
     pull: '{{ mole_pull_image }}'
     command: shadowsocks-local
     restart_policy: always
-    exposed:
+    exposed_ports:
       - '1080'
     volumes:
       - '{{ mole_volume_dir }}/etc/shadowsocks:/etc/shadowsocks'
-    ports:
+    published_ports:
       - '{{ mole_listen_ip | default("127.0.0.1", true) }}:1080:1080'
     state: '{{ mole_state }}'
 
 - name: Setup cow container
   docker_container:
-    docker_api_version: '{{ mole_docker_api_version }}'
+    api_version: '{{ mole_docker_api_version }}'
     name: cow
     image: 'dochang/cow:{{ mole_docker_image_tag }}'
     pull: '{{ mole_pull_image }}'
     restart_policy: always
     links:
       - shadowsocks-ota:shadowsocks
-    exposed:
+    exposed_ports:
       - '7777'
     volumes:
       - '{{ mole_volume_dir }}/etc/cow:/.cow'
-    ports:
+    published_ports:
       - '{{ mole_listen_ip | default("127.0.0.1", true) }}:7777:7777'
     state: '{{ mole_state }}'
 
 - name: Setup tor container
   docker_container:
-    docker_api_version: '{{ mole_docker_api_version }}'
+    api_version: '{{ mole_docker_api_version }}'
     name: tor
     image: dochang/tor:latest
     pull: '{{ mole_pull_image }}'
     restart_policy: always
     links:
       - shadowsocks-ota:shadowsocks
-    exposed:
+    exposed_ports:
       - '9050'
     volumes:
       - '{{ mole_volume_dir }}/etc/tor:/etc/tor'
-    ports:
+    published_ports:
       - '{{ mole_listen_ip | default("127.0.0.1", true) }}:9050:9050'
     state: '{{ mole_state }}'
 
 - name: Setup privoxy container
   docker_container:
-    docker_api_version: '{{ mole_docker_api_version }}'
+    api_version: '{{ mole_docker_api_version }}'
     name: privoxy
     image: dochang/privoxy:latest
     pull: '{{ mole_pull_image }}'
@@ -127,12 +127,12 @@
       - cow:cow
       - shadowsocks-ota:shadowsocks
       - tor:tor
-    exposed:
+    exposed_ports:
       - '8118'
     volumes:
       - '{{ mole_volume_dir }}/etc/privoxy:/etc/privoxy'
     env:
       TZ: 'Asia/Shanghai'
-    ports:
+    published_ports:
       - '{{ mole_listen_ip | default("127.0.0.1", true) }}:8118:8118'
     state: '{{ mole_state }}'
