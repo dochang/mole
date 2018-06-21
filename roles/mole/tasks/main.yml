@@ -66,6 +66,13 @@
     remote_src: True
     dest: '{{ mole_volume_dir }}/etc/privoxy/user.action'
 
+- name: Setup docker network
+  docker_network:
+    api_version: '{{ mole_docker_api_version }}'
+    name: mole
+    driver: bridge
+    state: present
+
 - name: Setup shadowsocks container
   docker_container:
     api_version: '{{ mole_docker_api_version }}'
@@ -74,8 +81,9 @@
     pull: '{{ mole_pull_image }}'
     command: 'go-shadowsocks2 -verbose -c ss://{{ mole_ss_method }}:{{ mole_ss_password }}@{{ mole_ss_server }}:{{ mole_ss_port }} -socks :1080 -u'
     restart_policy: always
-    exposed_ports:
-      - '1080'
+    network_mode: bridge
+    networks:
+      - name: mole
     published_ports:
       - '{{ mole_listen_ip | default("127.0.0.1", true) }}:1080:1080'
     state: '{{ mole_state }}'
@@ -87,10 +95,9 @@
     image: 'dochang/cow:{{ mole_docker_image_tag }}'
     pull: '{{ mole_pull_image }}'
     restart_policy: always
-    links:
-      - shadowsocks:shadowsocks
-    exposed_ports:
-      - '7777'
+    network_mode: bridge
+    networks:
+      - name: mole
     volumes:
       - '{{ mole_volume_dir }}/etc/cow:/.cow'
     published_ports:
@@ -104,10 +111,9 @@
     image: dochang/tor:latest
     pull: '{{ mole_pull_image }}'
     restart_policy: always
-    links:
-      - shadowsocks:shadowsocks
-    exposed_ports:
-      - '9050'
+    network_mode: bridge
+    networks:
+      - name: mole
     volumes:
       - '{{ mole_volume_dir }}/etc/tor:/etc/tor'
     published_ports:
@@ -121,12 +127,9 @@
     image: dochang/privoxy:latest
     pull: '{{ mole_pull_image }}'
     restart_policy: always
-    links:
-      - cow:cow
-      - shadowsocks:shadowsocks
-      - tor:tor
-    exposed_ports:
-      - '8118'
+    network_mode: bridge
+    networks:
+      - name: mole
     volumes:
       - '{{ mole_volume_dir }}/etc/privoxy:/etc/privoxy'
     env:
