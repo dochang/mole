@@ -2,12 +2,21 @@
 - name: Load variables from {{ mole_config_dir }}/vars.yml
   include_vars: '{{ mole_config_dir }}/vars.yml'
 
-- name: Ensure docker-py present
+- name: Install Python Docker library
+  pip:
+    name: '{{ mole_dockerpy_use_tls | ternary("docker[tls]", "docker") }}'
+    state: '{{ mole_dockerpy_state }}'
+  environment:
+    no_proxy: '*'
+  when: ansible_python_version is version_compare('2.7', '>=')
+
+- name: Install Python Docker library
   pip:
     name: 'docker-py'
     state: '{{ mole_dockerpy_state }}'
   environment:
     no_proxy: '*'
+  when: ansible_python_version is version_compare('2.7', '<')
 
 - name: Ensure mole_volume_dir is a directory
   file:
