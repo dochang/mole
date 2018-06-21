@@ -66,18 +66,16 @@
     remote_src: True
     dest: '{{ mole_volume_dir }}/etc/privoxy/user.action'
 
-- name: Setup shadowsocks-ota container
+- name: Setup shadowsocks container
   docker_container:
     api_version: '{{ mole_docker_api_version }}'
-    name: shadowsocks-ota
-    image: 'dochang/shadowsocks-go:ota'
+    name: shadowsocks
+    image: 'dochang/go-shadowsocks2:latest'
     pull: '{{ mole_pull_image }}'
-    command: shadowsocks-local
+    command: 'go-shadowsocks2 -verbose -c ss://{{ mole_ss_method }}:{{ mole_ss_password }}@{{ mole_ss_server }}:{{ mole_ss_port }} -socks :1080 -u'
     restart_policy: always
     exposed_ports:
       - '1080'
-    volumes:
-      - '{{ mole_volume_dir }}/etc/shadowsocks:/etc/shadowsocks'
     published_ports:
       - '{{ mole_listen_ip | default("127.0.0.1", true) }}:1080:1080'
     state: '{{ mole_state }}'
@@ -90,7 +88,7 @@
     pull: '{{ mole_pull_image }}'
     restart_policy: always
     links:
-      - shadowsocks-ota:shadowsocks
+      - shadowsocks:shadowsocks
     exposed_ports:
       - '7777'
     volumes:
@@ -107,7 +105,7 @@
     pull: '{{ mole_pull_image }}'
     restart_policy: always
     links:
-      - shadowsocks-ota:shadowsocks
+      - shadowsocks:shadowsocks
     exposed_ports:
       - '9050'
     volumes:
@@ -125,7 +123,7 @@
     restart_policy: always
     links:
       - cow:cow
-      - shadowsocks-ota:shadowsocks
+      - shadowsocks:shadowsocks
       - tor:tor
     exposed_ports:
       - '8118'
